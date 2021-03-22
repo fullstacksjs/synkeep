@@ -72,8 +72,10 @@ io.on('connection', (socket) => {
     for (const clientId of clients) {
       const clientSocket = io.sockets.sockets.get(clientId);
 
+      const agent = `${clientSocket.agent.toAgent()} on ${clientSocket.agent.os.toString()}`;
+
       sessions.push({
-        [clientSocket.agent.toAgent()]: {
+        [agent]: {
           id: clientSocket.id,
           ip: clientSocket.handshake.address,
           time: clientSocket.joinTime,
