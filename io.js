@@ -49,6 +49,10 @@ io.on('connection', (socket) => {
     socket.to(socket.room).emit('clipboard', data);
   });
 
+  io.on('clearClipboard', () => {
+    io.to(socket.root).emit('clearClipboard');
+  });
+
   socket.on('logout', () => {
     if (socket.ownedRoom) {
       const clients = io.sockets.adapter.rooms.get(socket.ownedRoom);

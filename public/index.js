@@ -17,3 +17,6 @@ socket.on('sessions', (sessions) => {
 socket.on('terminationResult', (message) => {
   console.log({ message });
 });
+socket.on('clearClipboard', () => {
+  console.log('history should be cleared.');
+});
