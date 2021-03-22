@@ -87,15 +87,15 @@ io.on('connection', (socket) => {
   });
 
   socket.on('terminate', (socketId) => {
-    const userSocket = io.sockets.sockets.get(socketId);
+    const clientSocket = io.sockets.sockets.get(socketId);
 
-    if (!userSocket) {
+    if (!clientSocket) {
       return io
         .to(socket.id)
         .emit('terminationResult', `${socketId} does not exists.`);
     }
 
-    if (userSocket.handshake.issued <= socket.handshake.issued) {
+    if (clientSocket.handshake.issued <= socket.handshake.issued) {
       return io
         .to(socket.id)
         .emit(
@@ -104,7 +104,7 @@ io.on('connection', (socket) => {
         );
     }
 
-    userSocket.disconnect(true);
+    clientSocket.disconnect(true);
     io.to(socket.room).emit(
       'terminationResult',
       `${socket.id} terminated successfully.`
