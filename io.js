@@ -112,4 +112,11 @@ io.on('connection', (socket) => {
   });
 });
 
+io.of('/').adapter.on('delete-room', (room) => {
+  const roomIndex = rooms.findIndex((roomName) => roomName === room);
+  if (roomIndex >= 0) {
+    rooms.splice(roomIndex, 1);
+  }
+});
+
 module.exports = io;
