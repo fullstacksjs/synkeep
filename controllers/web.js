@@ -6,6 +6,8 @@ const rooms = require('../rooms');
 exports.getToken = (req, res) => {
   const key = req.body.password || req.clientIp;
 
+  const hashKey = req.body.password ? 'password' : 'ip';
+
   let tokenExists = true;
 
   const alphabet = 'abcdefghijklmnopqrstuvwxyz123456780';
@@ -20,5 +22,5 @@ exports.getToken = (req, res) => {
 
   rooms.push(hashedToken);
 
-  res.json({ token });
+  res.json({ token, hashKey });
 };
