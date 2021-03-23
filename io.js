@@ -8,8 +8,8 @@ const useragent = require('useragent');
 io.use((socket, next) => {
   if (!socket.handshake.auth || !socket.handshake.auth.token)
     return next(new Error('Auth Token Required.'));
-  if (socket.handshake.auth.token.length !== 6)
-    return next(new Error('Auth Token Length Must Be 6 Characters Long.'));
+  if (socket.handshake.auth.token.length !== 4)
+    return next(new Error('Auth Token Length Must Be 4 Characters Long.'));
 
   const token = socket.handshake.auth.token;
   const key = socket.handshake.auth.password || socket.handshake.address;
