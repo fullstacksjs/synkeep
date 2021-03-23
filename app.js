@@ -14,10 +14,17 @@ app.use(requestIp.mw());
 app.all('/token', (req, res) => {
   const key = req.body.password || req.clientIp;
 
-  const alphabet = 'abcdefghijklmnopqrstuvwxyz123456780';
-  const token = nanoid.customAlphabet(alphabet, 6)();
+  let tokenExists = true;
 
-  const hashedToken = createHmac('sha512', key).update(token).digest('hex');
+  const alphabet = 'abcdefghijklmnopqrstuvwxyz123456780';
+  let token, hashedToken;
+
+  while (tokenExists) {
+    token = nanoid.customAlphabet(alphabet, 4)();
+    hashedToken = createHmac('sha512', key).update(token).digest('hex');
+
+    tokenExists = rooms.findIndex((room) => room === hashedToken) >= 0;
+  }
 
   rooms.push(hashedToken);
 
