@@ -10,6 +10,8 @@ exports.getToken = (req, res) => {
 
   let tokenExists = true;
 
+  console.log(req.clientIp);
+
   const alphabet = 'abcdefghijklmnopqrstuvwxyz123456780';
   let token, hashedToken;
 
