@@ -14,6 +14,8 @@ exports.authMiddleware = (socket, next) => {
   const token = socket.handshake.auth.token;
   const key = socket.handshake.auth.password || socket.handshake.address;
 
+  console.log(key);
+
   const hashedToken = createHmac('sha512', key).update(token).digest('hex');
 
   const room = rooms.find((room) => room === hashedToken);
