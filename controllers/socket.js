@@ -9,15 +9,11 @@ exports.authMiddleware = (socket, next) => {
   if (socket.handshake.auth.token.length !== 4)
     return next(new Error('Auth Token Length Must Be 4 Characters Long.'));
 
-  console.log(socket.handshake.address);
-
   const token = socket.handshake.auth.token;
   const key =
     socket.handshake.auth.password ||
     socket.handshake.headers['x-forwarded-for'] ||
     socket.handshake.address;
-
-  console.log({ handshake: socket.handshake });
 
   const hashedToken = createHmac('sha512', key).update(token).digest('hex');
 
