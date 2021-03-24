@@ -12,7 +12,10 @@ exports.authMiddleware = (socket, next) => {
   console.log(socket.handshake.address);
 
   const token = socket.handshake.auth.token;
-  const key = socket.handshake.auth.password || socket.handshake.address;
+  const key =
+    socket.handshake.auth.password ||
+    socket.handshake.headers['x-forwarded-for'] ||
+    socket.handshake.address;
 
   console.log({ handshake: socket.handshake });
 
