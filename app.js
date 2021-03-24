@@ -9,6 +9,7 @@ const controller = require('./controllers/web');
 app.use(express.static('public'));
 app.use(express.json({ limit: '1kb' }));
 app.use(requestIp.mw());
+app.set('trust proxy', true);
 
 app.all('/token', controller.getToken);
 
