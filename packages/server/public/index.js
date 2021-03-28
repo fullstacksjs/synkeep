@@ -8,6 +8,9 @@ socket.on('connect_error', (err) => {
 socket.on('connect', () => {
   console.log(socket.id);
 });
+socket.on('getJoinPermission', (information) => {
+  console.log({ getJoinPermission: information });
+});
 socket.on('clipboard', (data) => {
   console.log({ data });
 });
@@ -19,4 +22,7 @@ socket.on('terminationResult', (message) => {
 });
 socket.on('clearClipboard', () => {
   console.log('history should be cleared.');
+});
+socket.on('joined', () => {
+  console.log('joined');
 });

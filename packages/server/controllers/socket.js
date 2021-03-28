@@ -36,9 +36,11 @@ exports.addAgent = (socket, next) => {
 };
 
 exports.onClipboard = (socket) => (data) => {
+  if (!socket.rooms.has(socket.room)) return;
   socket.to(socket.room).emit('clipboard', data);
 };
 exports.onClearClipboard = (io, socket) => () => {
+  if (!socket.rooms.has(socket.room)) return;
   io.to(socket.root).emit('clearClipboard');
 };
 
@@ -55,6 +57,7 @@ exports.logout = (io, socket) => () => {
 };
 
 exports.getSessions = (io, socket) => () => {
+  if (!socket.rooms.has(socket.room)) return;
   const sessions = [];
 
   const clients = io.sockets.adapter.rooms.get(socket.room);
@@ -76,6 +79,7 @@ exports.getSessions = (io, socket) => () => {
 };
 
 exports.terminate = (io, socket) => (socketId) => {
+  if (!socket.rooms.has(socket.room)) return;
   const clientSocket = io.sockets.sockets.get(socketId);
 
   if (!clientSocket) {
@@ -105,4 +109,13 @@ exports.onDeleteRoom = (room) => {
   if (roomIndex >= 0) {
     rooms.splice(roomIndex, 1);
   }
+};
+
+exports.onApprove = (io, socket) => (clientId) => {
+  const clientSocket = io.sockets.sockets.get(clientId);
+  if (!clientSocket) return;
+  clientSocket.join(socket.room);
+  let time = new Date();
+  clientSocket.joinTime = `${time.getHours()}:${time.getMinutes()}:${time.getSeconds()}`;
+  io.to(clientSocket.id).emit('joined');
 };
