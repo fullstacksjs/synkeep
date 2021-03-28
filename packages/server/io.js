@@ -8,15 +8,18 @@ io.use(controller.authMiddleware);
 io.use(controller.addAgent);
 
 io.on('connection', (socket) => {
-  socket.join(socket.room);
-
-  let time = new Date(socket.handshake.issued);
-  socket.joinTime = `${time.getHours()}:${time.getMinutes()}:${time.getSeconds()}`;
-
   const room = io.sockets.adapter.rooms.get(socket.room);
-  if (room.size === 1) {
+  if (!room) {
     socket.ownedRoom = socket.room;
+    socket.join(socket.room);
+    let time = new Date();
+    socket.joinTime = `${time.getHours()}:${time.getMinutes()}:${time.getSeconds()}`;
+  } else {
+    const agent = `${socket.agent.toAgent()} on ${socket.agent.os.toString()}`;
+    socket.to(socket.room).emit('getJoinPermission', { id: socket.id, agent });
   }
+
+  socket.on('approve', controller.onApprove(io, socket));
 
   socket.on('clipboard', controller.onClipboard(socket));
   socket.on('clearClipboard', controller.onClearClipboard(io, socket));
