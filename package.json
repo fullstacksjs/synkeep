@@ -1,0 +1,8 @@
+{
+  "name": "synkeep",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/fullstacksjs/synkeep.git",
+  "author": "Mohammad MohammadAlian <mralian.dev@gmail.com>",
+  "license": "MIT"
+}
